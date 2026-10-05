@@ -2,10 +2,12 @@ const getApiBaseUrl = () => {
   if (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== '/api') {
     return import.meta.env.VITE_API_URL;
   }
-  if (typeof window !== 'undefined' && window.location.hostname.includes('railway.app')) {
-    return 'https://sweet-cafe-backend-production.up.railway.app';
+  if (typeof window !== 'undefined') {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return 'http://localhost:4000';
+    }
   }
-  return 'http://localhost:4000';
+  return 'https://sweet-cafe-backend-production.up.railway.app';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
