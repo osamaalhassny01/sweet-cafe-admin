@@ -40,12 +40,38 @@ export default function LoginPage() {
     }
   };
 
+  const fillDemoCreds = (eMail: string, pass: string) => {
+    setAuthMode('JWT');
+    setEmail(eMail);
+    setPassword(pass);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4" dir="rtl">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 space-y-6">
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold text-gray-900">كافي بن</h1>
           <p className="text-gray-500">لوحة الإدارة والتحكم</p>
+        </div>
+
+        <div className="bg-amber-50 p-3 rounded-xl text-xs text-amber-800 space-y-2 border border-amber-200">
+          <p className="font-bold">⚡ اضغط للتعبئة التلقائية وحفظ البيانات:</p>
+          <div className="flex gap-2 flex-wrap">
+            <button 
+              type="button" 
+              onClick={() => fillDemoCreds('admin@admin.com', '123456')} 
+              className="bg-amber-200 hover:bg-amber-300 text-amber-900 font-medium px-2.5 py-1.5 rounded-lg transition-all"
+            >
+              admin@admin.com / 123456
+            </button>
+            <button 
+              type="button" 
+              onClick={() => fillDemoCreds('admin@sweet.com', '123456')} 
+              className="bg-amber-200 hover:bg-amber-300 text-amber-900 font-medium px-2.5 py-1.5 rounded-lg transition-all"
+            >
+              admin@sweet.com / 123456
+            </button>
+          </div>
         </div>
 
         <div className="flex p-1 bg-gray-100 rounded-lg">
