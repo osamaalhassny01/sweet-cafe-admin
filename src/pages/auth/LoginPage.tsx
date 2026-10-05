@@ -21,20 +21,28 @@ export default function LoginPage() {
 
     try {
       if (authMode === 'JWT') {
-        const res = await api.post('/admin/auth/login', { email, password });
-        login(res.data.accessToken, res.data.user);
+        const cleanEmail = email.trim().toLowerCase();
+        const res = await api.post('/admin/auth/login', { email: cleanEmail, password });
+        const token = res.data?.accessToken || res.data?.data?.accessToken;
+        const userObj = res.data?.user || res.data?.data?.user;
+        if (!token) {
+          throw new Error('لم يتم استلام توكن الدخول من الخادم');
+        }
+        login(token, userObj);
         toast.success('تم تسجيل الدخول بنجاح');
       } else {
-        // Validate API Key by trying an admin endpoint
+        const cleanKey = apiKey.trim();
         await api.get('/admin/orders?page=1&limit=1', { 
-          headers: { 'x-admin-key': apiKey } 
+          headers: { 'x-admin-key': cleanKey } 
         });
-        loginWithApiKey(apiKey);
+        loginWithApiKey(cleanKey);
         toast.success('تم تسجيل الدخول بواسطة مفتاح API');
       }
       navigate('/');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'فشل تسجيل الدخول');
+      console.error('Login error:', error);
+      const msg = error.response?.data?.message || error.message || 'فشل تسجيل الدخول';
+      toast.error(Array.isArray(msg) ? msg.join(', ') : String(msg));
     } finally {
       setIsLoading(false);
     }
