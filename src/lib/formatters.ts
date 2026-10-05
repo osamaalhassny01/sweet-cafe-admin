@@ -1,4 +1,14 @@
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== '/api') {
+    return import.meta.env.VITE_API_URL;
+  }
+  if (typeof window !== 'undefined' && window.location.hostname.includes('railway.app')) {
+    return 'https://sweet-cafe-backend-production.up.railway.app';
+  }
+  return 'http://localhost:4000';
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 const STORAGE_TO_YER_RATE = 100;
 
